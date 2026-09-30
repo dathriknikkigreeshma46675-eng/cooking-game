@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff9966, #ff5e62);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+h1 {
+  color: #e74c3c;
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-around;
+  background: #fff3cd;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.ingredients {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.ingredients button,
+.cook-button,
+.restart-button {
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.ingredients button {
+  background: #dff9fb;
+}
+
+.ingredients button:hover {
+  background: #c7ecee;
+  transform: scale(1.05);
+}
+
+.ingredients button.selected-button {
+  background: #6ab04c;
+  color: white;
+}
+
+.selected {
+  min-height: 40px;
+  margin: 10px 0 20px;
+  color: #555;
+  font-weight: bold;
+}
+
+.cook-button {
+  background: #f39c12;
+  color: white;
+  width: 45%;
+}
+
+.cook-button:hover {
+  background: #d68910;
+}
+
+.restart-button {
+  background: #3498db;
+  color: white;
+  width: 45%;
+}
+
+.restart-button:hover {
+  background: #2980b9;
+}
+
+.message {
+  min-height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
