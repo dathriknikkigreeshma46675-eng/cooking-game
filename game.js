@@ -1,93 +1,124 @@
+const recipes = {
+  salad: {
+    name: "Salad",
+    ingredients: ["lettuce", "tomato", "carrot"],
+    points: 10
+  },
+  pizza: {
+    name: "Pizza",
+    ingredients: ["dough", "tomato", "cheese"],
+    points: 15
+  },
+  burger: {
+    name: "Burger",
+    ingredients: ["bun", "patty", "lettuce"],
+    points: 15
+  },
+  soup: {
+    name: "Soup",
+    ingredients: ["water", "carrot", "onion"],
+    points: 20
+  },
+  cake: {
+    name: "Cake",
+    ingredients: ["flour", "egg", "sugar"],
+    points: 20
+  }
+};
+
 const ingredientButtons = document.querySelectorAll(".ingredients button");
 const selectedIngredientsBox = document.getElementById("selectedIngredients");
+const recipeName = document.getElementById("recipe-name");
+const recipeIngredientsBox = document.getElementById("recipe-ingredients");
+const scoreDisplay = document.getElementById("score");
+const timeDisplay = document.getElementById("time");
 const cookButton = document.getElementById("cookButton");
 const restartButton = document.getElementById("restartButton");
 const message = document.getElementById("message");
-const scoreDisplay = document.getElementById("score");
-const timeDisplay = document.getElementById("time");
-
-const correctIngredients = ["tomato", "lettuce", "carrot"];
 
 let selectedIngredients = [];
 let score = 0;
-let timeLeft = 30;
+let timeLeft = 45;
 let gameOver = false;
-let timer;
+let timer = null;
+let currentRecipeKey = null;
 
-// Select or remove ingredients
-ingredientButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    if (gameOver) {
-      return;
-    }
+function getRandomRecipeKey() {
+  const keys = Object.keys(recipes);
+  return keys[Math.floor(Math.random() * keys.length)];
+}
 
-    const ingredient = button.dataset.ingredient;
+function sortIngredients(list) {
+  return [...list].sort();
+}
 
-    if (selectedIngredients.includes(ingredient)) {
-      selectedIngredients = selectedIngredients.filter(
-        (item) => item !== ingredient
-      );
-
-      button.classList.remove("selected-button");
-    } else {
-      selectedIngredients.push(ingredient);
-      button.classList.add("selected-button");
-    }
-
-    displaySelectedIngredients();
-  });
-});
-
-// Show selected ingredients
-function displaySelectedIngredients() {
+function updateSelectedIngredients() {
   if (selectedIngredients.length === 0) {
-    selectedIngredientsBox.textContent = "Nothing selected";
+    selectedIngredientsBox.textContent = "None selected";
     return;
   }
 
   selectedIngredientsBox.textContent = selectedIngredients.join(", ");
 }
 
-// Cook the recipe
-cookButton.addEventListener("click", () => {
-  if (gameOver) {
-    return;
-  }
+function clearSelectedIngredients() {
+  selectedIngredients = [];
+  ingredientButtons.forEach((button) => {
+    button.classList.remove("selected-button");
+  });
+  updateSelectedIngredients();
+}
 
-  const playerIngredients = [...selectedIngredients].sort();
-  const recipeIngredients = [...correctIngredients].sort();
+function showRecipe(recipeKey) {
+  currentRecipeKey = recipeKey;
+  const recipe = recipes[recipeKey];
 
-  const isCorrect =
-    JSON.stringify(playerIngredients) === JSON.stringify(recipeIngredients);
+  recipeName.textContent = recipe.name;
+  recipeIngredientsBox.innerHTML = "";
 
-  if (isCorrect) {
-    score += 10;
+  recipe.ingredients.forEach((ingredient) => {
+    const tag = document.createElement("span");
+    tag.className = "recipe-ingredient";
+    tag.textContent = ingredient;
+    recipeIngredientsBox.appendChild(tag);
+  });
+}
+
+function checkRecipe() {
+  if (!currentRecipeKey || gameOver) return;
+
+  const recipe = recipes[currentRecipeKey];
+  const correct = sortIngredients(recipe.ingredients);
+  const chosen = sortIngredients(selectedIngredients);
+
+  if (JSON.stringify(chosen) === JSON.stringify(correct)) {
+    score += recipe.points;
     scoreDisplay.textContent = score;
-    message.textContent = "✅ Delicious! You made a salad!";
+    message.textContent = `✅ Correct! You made ${recipe.name}!`;
     message.style.color = "green";
+
+    setTimeout(() => {
+      if (!gameOver) {
+        nextRecipe();
+      }
+    }, 700);
   } else {
     score = Math.max(0, score - 5);
     scoreDisplay.textContent = score;
-    message.textContent =
-      "❌ That recipe is incorrect. Try tomato, lettuce, and carrot.";
+    message.textContent = `❌ Not quite. The recipe needs: ${recipe.ingredients.join(", ")}`;
     message.style.color = "red";
   }
 
   clearSelectedIngredients();
-});
-
-// Clear ingredient selections
-function clearSelectedIngredients() {
-  selectedIngredients = [];
-
-  ingredientButtons.forEach((button) => {
-    button.classList.remove("selected-button");
-  });
-
-  displaySelectedIngredients();
 }
 
-// Countdown timer
+function nextRecipe() {
+  const nextKey = getRandomRecipeKey();
+  showRecipe(nextKey);
+  message.textContent = "";
+  message.style.color = "#2c3e50";
+}
+
 function startTimer() {
   timer = setInterval(() => {
     timeLeft--;
@@ -99,45 +130,66 @@ function startTimer() {
   }, 1000);
 }
 
-// End the game
 function endGame() {
   gameOver = true;
   clearInterval(timer);
-
-  message.textContent = `⏰ Time's up! Final score: ${score}`;
-  message.style.color = "#e74c3c";
-
   cookButton.disabled = true;
 
   ingredientButtons.forEach((button) => {
     button.disabled = true;
   });
+
+  message.textContent = `⏰ Time's up! Final score: ${score}`;
+  message.style.color = "#c0392b";
 }
 
-// Restart the game
-restartButton.addEventListener("click", () => {
+function restartGame() {
   clearInterval(timer);
-
-  selectedIngredients = [];
   score = 0;
-  timeLeft = 30;
-  gameOver = false;
-
+  timeLeft = 45;
   scoreDisplay.textContent = score;
   timeDisplay.textContent = timeLeft;
   message.textContent = "";
-
-  cookButton.disabled = false;
+  message.style.color = "#2c3e50";
 
   ingredientButtons.forEach((button) => {
     button.disabled = false;
-    button.classList.remove("selected-button");
   });
 
-  displaySelectedIngredients();
+  cookButton.disabled = false;
+  gameOver = false;
+
+  clearSelectedIngredients();
+  nextRecipe();
   startTimer();
+}
+
+ingredientButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (gameOver) return;
+
+    const ingredient = button.dataset.ingredient;
+
+    if (selectedIngredients.includes(ingredient)) {
+      selectedIngredients = selectedIngredients.filter((item) => item !== ingredient);
+      button.classList.remove("selected-button");
+    } else {
+      selectedIngredients.push(ingredient);
+      button.classList.add("selected-button");
+    }
+
+    updateSelectedIngredients();
+  });
 });
 
-// Start the game
-displaySelectedIngredients();
+cookButton.addEventListener("click", () => {
+  checkRecipe();
+});
+
+restartButton.addEventListener("click", () => {
+  restartGame();
+});
+
+nextRecipe();
 startTimer();
+
