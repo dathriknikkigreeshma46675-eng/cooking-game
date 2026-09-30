@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cooking Game</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="game">
-    <h1>🍳 Cooking Game</h1>
-
-    <section class="score-board">
-      <p>Score: <span id="score">0</span></p>
-      <p>Time: <span id="time">30</span>s</p>
-    </section>
-
-    <section class="recipe">
-      <h2>Recipe: Make a Salad 🥗</h2>
-      <h3>Recipe:Make a sandwitch</h3>
-      <p>Select all the correct ingredients:</p>
-     <div id="ingredients" class="ingredients">
-        <button data-ingredient="tomato">🍅 Tomato</button>
-        <button data-ingredient="lettuce">🥬 Lettuce</button>
-        <button data-ingredient="cheese">🧀 Cheese</button>
-        <button data-ingredient="carrot">🥕 Carrot</button>
-        <button data-ingredient="chocolate">🍫 Chocolate</button>
-        <button data-ingredient="fish">🐟 Fish</button>
-       <button data-ingredient="bread">bread</button>
-       <button data-ingredient="onion"> onion</button>
-       
-       
+    <header class="header">
+      <h1>🍳 Cooking Game</h1>
+      <div class="stats">
+        <div class="stat">
+          <span class="label">Score</span>
+          <span id="score">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Time</span>
+          <span id="time">45</span>s
+        </div>
       </div>
+    </header>
 
-      <p>Selected ingredients:</p>
-      <div id="selectedIngredients" class="selected"></div>
-
-      <button id="cookButton" class="cook-button">🍳 Cook</button>
-      <button id="restartButton" class="restart-button">Restart Game</button>
-
-      <p id="message" class="message"></p>
+    <section class="recipe-panel">
+      <h2>Current Recipe</h2>
+      <p id="recipe-name">Salad</p>
+      <div id="recipe-ingredients" class="recipe-ingredients"></div>
     </section>
+
+    <section class="ingredient-section">
+      <h3>Select ingredients</h3>
+      <div id="ingredients" class="ingredients">
+        <button data-ingredient="lettuce">🥬 Lettuce</button>
+        <button data-ingredient="tomato">🍅 Tomato</button>
+        <button data-ingredient="carrot">🥕 Carrot</button>
+        <button data-ingredient="cheese">🧀 Cheese</button>
+        <button data-ingredient="dough">🥯 Dough</button>
+        <button data-ingredient="patty">🥩 Patty</button>
+        <button data-ingredient="bun">🍞 Bun</button>
+        <button data-ingredient="onion">🧅 Onion</button>
+        <button data-ingredient="water">💧 Water</button>
+        <button data-ingredient="egg">🥚 Egg</button>
+        <button data-ingredient="flour">🌾 Flour</button>
+        <button data-ingredient="sugar">🍬 Sugar</button>
+      </div>
+    </section>
+
+    <div class="selection-box">
+      <h3>Selected ingredients</h3>
+      <div id="selectedIngredients" class="selected">None selected</div>
+    </div>
+
+    <div class="buttons">
+      <button id="cookButton" class="cook-button">🍳 Cook</button>
+      <button id="restartButton" class="restart-button">Restart</button>
+    </div>
+
+    <p id="message" class="message"></p>
   </main>
 
   <script src="game.js"></script>
 </body>
 </html>
+
