@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooking Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <h1>🍳 Cooking Game</h1>
+
+    <section class="score-board">
+      <p>Score: <span id="score">0</span></p>
+      <p>Time: <span id="time">30</span>s</p>
+    </section>
+
+    <section class="recipe">
+      <h2>Recipe: Make a Salad 🥗</h2>
+      <p>Select all the correct ingredients:</p>
+
+      <div id="ingredients" class="ingredients">
+        <button data-ingredient="tomato">🍅 Tomato</button>
+        <button data-ingredient="lettuce">🥬 Lettuce</button>
+        <button data-ingredient="cheese">🧀 Cheese</button>
+        <button data-ingredient="carrot">🥕 Carrot</button>
+        <button data-ingredient="chocolate">🍫 Chocolate</button>
+        <button data-ingredient="fish">🐟 Fish</button>
+      </div>
+
+      <p>Selected ingredients:</p>
+      <div id="selectedIngredients" class="selected"></div>
+
+      <button id="cookButton" class="cook-button">🍳 Cook</button>
+      <button id="restartButton" class="restart-button">Restart Game</button>
+
+      <p id="message" class="message"></p>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
